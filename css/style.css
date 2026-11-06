@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Square+Peg&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+header{
+    padding: 1vh 7vw;
+    background-color: #fff;
+    display: flex;
+    min-height: 64px;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header .logo .logo-text{
+    margin: 0;
+    font-size: 36px;
+    font-family: "Square Peg", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.navbar ul{
+    display: flex;
+    align-items: center;
+    gap: 2vw;
+    list-style-type: none;
+}
+
+.navbar ul li{
+    font-size: 16px;
+    font-family: "JetBrains Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+}
+
+.navbar ul li a{
+    color: black;
+    text-decoration: none;
+}
+
+.navbar ul li a:hover{
+    color: #ff6600;
+    font-weight: 300;
+    transition: color 0.3s ease;
+}
