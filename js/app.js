@@ -113,3 +113,26 @@ if (resetForm) {
         }
     });
 }
+
+const aboutRevealElements = document.querySelectorAll(".about-reveal");
+
+if (aboutRevealElements.length) {
+    const revealAboutContent = (entries, observer) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("about-visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    };
+
+    if ("IntersectionObserver" in window) {
+        const aboutObserver = new IntersectionObserver(revealAboutContent, {
+            threshold: 0.12
+        });
+
+        aboutRevealElements.forEach((element) => aboutObserver.observe(element));
+    } else {
+        aboutRevealElements.forEach((element) => element.classList.add("about-visible"));
+    }
+}
