@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Caterly</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/auth.js"></script>
+    <script src="../js/navbar.js"></script>
+</head>
+<body>
+    <main>
+        <section class="contact-page">
+            <div class="contact-intro">
+                <p class="eyebrow">Let’s figure it out together</p>
+                <div class="contact-details">
+                    <div>
+                        <span class="contact-detail-label">Call us</span>
+                        <a href="tel:+15550123456">+1 (555) 012-3456</a>
+                    </div>
+                    <div>
+                        <span class="contact-detail-label">Email us</span>
+                        <a href="mailto:hello@caterly.com">hello@caterly.com</a>
+                    </div>
+                    <div>
+                        <span class="contact-detail-label">Available</span>
+                        <span>Mon–Sat, 9 AM–6 PM</span>
+                    </div>
+                </div>
+            </div>
+
+            <form class="consultation-form">
+                <h2 id="contact-heading">Tell us about your event</h2>
+                <p class="form-note">You don’t need to have everything decided.</p>
+
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" autocomplete="name" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" autocomplete="email" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="phone">Phone number</label>
+                        <input type="tel" id="phone" name="phone" autocomplete="tel">
+                    </div>
+                    <div class="form-field">
+                        <label for="event-type">Event type</label>
+                        <select id="event-type" name="event-type" required>
+                            <option value="" selected disabled>Choose an event</option>
+                            <option>Wedding</option>
+                            <option>Birthday</option>
+                            <option>Corporate event</option>
+                            <option>Private party</option>
+                            <option>Festival or celebration</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="event-date">Event date</label>
+                        <input type="date" id="event-date" name="event-date">
+                    </div>
+                    <div class="form-field">
+                        <label for="guests">Number of guests</label>
+                        <input type="number" id="guests" name="guests" min="1" placeholder="Approximate number">
+                    </div>
+                    <div class="form-field form-field-wide">
+                        <label for="message">What are you thinking about?</label>
+                        <textarea id="message" name="message" rows="3" placeholder="Tell us anything you already know about your event..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit">Request a consultation</button>
+                <p class="form-feedback" role="status" aria-live="polite"></p>
+            </form>
+        </section>
+
+        <!-- ── STATUS TRACKER SECTION ───────────────────────────────── -->
+        <section class="tracker-section" aria-labelledby="tracker-heading">
+            <div class="tracker-card">
+                <div class="tracker-header">
+                    <p class="tracker-kicker">Live Status Tracking</p>
+                    <h2 id="tracker-heading">Track Your Event Inquiry</h2>
+                    <p class="tracker-desc">Already submitted a booking request? Enter your Reference ID (e.g. <code>BK-123456</code>) to check its current review and preparation status.</p>
+                </div>
+                <form class="tracker-form" id="tracker-form">
+                    <div class="tracker-input-group">
+                        <label for="tracker-id" class="sr-only">Booking Reference ID</label>
+                        <input type="text" id="tracker-id" placeholder="Enter reference number (e.g. BK-123456)" required autocomplete="off">
+                        <button type="submit" class="btn btn-secondary">Check Status</button>
+                    </div>
+                </form>
+                <div class="tracker-result" id="tracker-result" aria-live="polite"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ── FOOTER ──────────────────────────────────────────────────── -->
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <a class="site-brand" href="../index.html">
+                <span class="site-title site-footer-logo">Caterly</span>
+            </a>
+            <nav aria-label="Footer navigation">
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="dashboard.html">Owner Portal</a></li>
+                </ul>
+            </nav>
+            <p class="site-footer-copy">&copy; 2026 Caterly &middot; Phagwara, Punjab</p>
+        </div>
+    </footer>
+
+    <script src="../js/app.js" defer></script>
+</body>
+</html>
