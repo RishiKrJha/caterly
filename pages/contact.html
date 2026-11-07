@@ -22,7 +22,71 @@
         </nav>
     </header>
     <main>
-        <p>This is Contact page</p>
+        <section class="contact-page">
+            <div class="contact-intro">
+                <p class="eyebrow">Let’s figure it out together</p>
+                <div class="contact-details">
+                    <div>
+                        <span class="contact-detail-label">Call us</span>
+                        <a href="tel:+15550123456">+1 (555) 012-3456</a>
+                    </div>
+                    <div>
+                        <span class="contact-detail-label">Email us</span>
+                        <a href="mailto:hello@caterly.com">hello@caterly.com</a>
+                    </div>
+                    <div>
+                        <span class="contact-detail-label">Available</span>
+                        <span>Mon–Sat, 9 AM–6 PM</span>
+                    </div>
+                </div>
+            </div>
+
+            <form class="consultation-form">
+                <h2 id="contact-heading">Tell us about your event</h2>
+                <p class="form-note">You don’t need to have everything decided.</p>
+
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" autocomplete="name" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" autocomplete="email" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="phone">Phone number</label>
+                        <input type="tel" id="phone" name="phone" autocomplete="tel">
+                    </div>
+                    <div class="form-field">
+                        <label for="event-type">Event type</label>
+                        <select id="event-type" name="event-type" required>
+                            <option value="" selected disabled>Choose an event</option>
+                            <option>Wedding</option>
+                            <option>Birthday</option>
+                            <option>Corporate event</option>
+                            <option>Private party</option>
+                            <option>Festival or celebration</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="event-date">Event date</label>
+                        <input type="date" id="event-date" name="event-date">
+                    </div>
+                    <div class="form-field">
+                        <label for="guests">Number of guests</label>
+                        <input type="number" id="guests" name="guests" min="1" placeholder="Approximate number">
+                    </div>
+                    <div class="form-field form-field-wide">
+                        <label for="message">What are you thinking about?</label>
+                        <textarea id="message" name="message" rows="3" placeholder="Tell us anything you already know about your event..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit">Let’s figure it out</button>
+            </form>
+        </section>
     </main>
 </body>
 </html>

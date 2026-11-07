@@ -1,12 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Square+Peg&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
 :root {
     --font-logo: "Square Peg", cursive;
+    --font-heading: "Playfair Display", serif;
+    --font-body: "DM Sans", sans-serif;
     --font-navigation: "JetBrains Mono", monospace;
     --color-accent: #ff6600;
     --color-page-background: #fff8f0;
+    /* --color-page-background: white; */
+    --color-card: #fffaf3;
+    --color-text-muted: #705f52;
     --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 12px 35px rgba(83, 48, 20, 0.1);
     --transition-color: color 0.3s ease;
 }
 
@@ -18,13 +26,15 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--color-page-background);
+    color: #241a14;
+    font-family: var(--font-body);
 }
 
 header {
     padding: 1vh clamp(1.5rem, 7vw, 7rem);
     background-color: var(--color-page-background);
     display: flex;
-    min-height: 64px;
+    min-height: 10vh;
     gap: 2rem;
     justify-content: space-between;
     align-items: center;
@@ -73,4 +83,200 @@ nav a {
 nav a:hover {
     color: var(--color-accent);
     font-weight: 300;
+}
+
+.contact-page {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    width: min(960px, calc(100% - 4rem));
+    height: min(570px, calc(90vh - 4rem));
+    min-height: 0;
+    margin: 2.5rem auto;
+    overflow: hidden;
+    border-radius: 18px;
+    background-color: var(--color-card);
+    border: 1px solid #f0e2d5;
+    box-shadow: var(--card-shadow);
+}
+
+.contact-intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+    padding: 1.75rem;
+    color: #fff;
+    background-image:
+        linear-gradient(rgba(48, 25, 12, 0.45), rgba(48, 25, 12, 0.72)),
+        url("https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=700&q=80");
+    background-position: 65% center;
+    background-size: cover;
+}
+
+.eyebrow {
+    max-width: 150px;
+    margin: 0;
+    color: #fff;
+    font-family: var(--font-navigation);
+    font-size: 0.68rem;
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.contact-details {
+    display: grid;
+    gap: 0.65rem;
+    color: rgba(255, 255, 255, 0.82);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+}
+
+.contact-details > div {
+    display: grid;
+    gap: 0.25rem;
+}
+
+.contact-detail-label {
+    color: #fff;
+    font-weight: 600;
+}
+
+.contact-details a {
+    color: rgba(255, 255, 255, 0.82);
+    text-decoration: none;
+}
+
+.contact-details a:hover {
+    color: var(--color-accent);
+}
+
+.consultation-form {
+    min-width: 0;
+    align-self: center;
+    width: min(100%, 620px);
+    justify-self: center;
+    border-left: 1px solid #eadbcd;
+    padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.consultation-form h2 {
+    margin: 0 0 0.35rem;
+    color: #241a14;
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 400;
+}
+
+.form-note {
+    margin: 0 0 1.1rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem 0.9rem;
+}
+
+.form-field {
+    display: grid;
+    gap: 0.3rem;
+}
+
+.form-field-wide {
+    grid-column: 1 / -1;
+}
+
+.form-field label {
+    color: #241a14;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid #e5d8cc;
+    border-radius: 7px;
+    background-color: #fffdfb;
+    color: #241a14;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+}
+
+.form-field textarea {
+    resize: vertical;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+    color: #aa9b90;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    outline: 2px solid rgba(255, 102, 0, 0.25);
+    border-color: var(--color-accent);
+}
+
+.consultation-form button {
+    margin-top: 1.1rem;
+    padding: 0.6rem 0.95rem;
+    border: 0;
+    border-radius: 7px;
+    background-color: #e85f0a;
+    color: #fff;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.consultation-form button:hover {
+    background-color: #c94f08;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .contact-page {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        width: min(100% - 2rem, 600px);
+        height: auto;
+        min-height: 0;
+        margin: 1rem auto 2rem;
+        overflow: visible;
+        border-radius: 14px;
+    }
+
+    .contact-intro {
+        min-height: 220px;
+        padding: 1.5rem;
+        border-radius: 14px 14px 0 0;
+    }
+
+    .consultation-form {
+        padding: 1.5rem;
+        border-top: 1px solid #eadbcd;
+        border-left: 0;
+    }
+}
+
+@media (max-width: 500px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-field-wide {
+        grid-column: auto;
+    }
 }
