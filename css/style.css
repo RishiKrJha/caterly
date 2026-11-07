@@ -20,6 +20,8 @@
     --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     --card-shadow: 0 6px 18px rgba(83, 48, 20, 0.07);
     --transition-color: color 0.3s ease;
+    /* navbar height — used by hero to fill remaining viewport exactly */
+    --navbar-height: 10vh;
 }
 
 * {
@@ -54,11 +56,44 @@ header {
     padding: 1vh clamp(1.5rem, 7vw, 7rem);
     background-color: var(--color-page-background);
     display: flex;
-    min-height: 10vh;
+    min-height: var(--navbar-height, 10vh);
     gap: 2rem;
     justify-content: space-between;
     align-items: center;
     box-shadow: var(--header-shadow);
+    /* shared navbar baseline — sticky + scroll-glass applied by navbar.js */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: background-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+/* scroll-glass state toggled by navbar.js */
+header.nav-scrolled {
+    background-color: rgba(255, 248, 240, 0.97);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 1px 20px rgba(83, 48, 20, 0.12);
+}
+
+/* active link */
+nav a.nav-active {
+    color: var(--color-accent);
+}
+
+/* Login pill button */
+nav a.nav-cta {
+    padding: 0.4rem 1.1rem;
+    border: 1.5px solid var(--color-accent);
+    border-radius: 100px;
+    color: var(--color-accent) !important;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+nav a.nav-cta:hover {
+    background-color: var(--color-accent);
+    color: #fff !important;
+    font-weight: 200; /* cancel the base nav a:hover weight bump */
 }
 
 .site-brand {
