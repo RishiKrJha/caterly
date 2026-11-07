@@ -14,7 +14,7 @@
     --color-card: #fffaf3;
     --color-text-muted: #705f52;
     --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    --card-shadow: 0 12px 35px rgba(83, 48, 20, 0.1);
+    --card-shadow: 0 6px 18px rgba(83, 48, 20, 0.07);
     --transition-color: color 0.3s ease;
 }
 
@@ -26,6 +26,12 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--color-page-background);
+    background-image:
+        linear-gradient(rgba(255, 248, 240, 0.92), rgba(255, 248, 240, 0.92)),
+        url("../assets/images/elegant-table-setting.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
     color: #241a14;
     font-family: var(--font-body);
 }
@@ -107,8 +113,8 @@ nav a:hover {
     padding: 1.75rem;
     color: #fff;
     background-image:
-        linear-gradient(rgba(48, 25, 12, 0.45), rgba(48, 25, 12, 0.72)),
-        url("https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=700&q=80");
+        linear-gradient(rgba(72, 39, 20, 0.52), rgba(72, 39, 20, 0.78)),
+        url("../assets/images/elegant-table-setting.jpg");
     background-position: 65% center;
     background-size: cover;
 }
@@ -156,7 +162,6 @@ nav a:hover {
     align-self: center;
     width: min(100%, 620px);
     justify-self: center;
-    border-left: 1px solid #eadbcd;
     padding: clamp(1.25rem, 3vw, 2rem);
 }
 
@@ -266,8 +271,6 @@ nav a:hover {
 
     .consultation-form {
         padding: 1.5rem;
-        border-top: 1px solid #eadbcd;
-        border-left: 0;
     }
 }
 
