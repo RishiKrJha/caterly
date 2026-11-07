@@ -338,4 +338,56 @@
             }
         });
     }
+
+    /* ── 8. Status Tracker Lookup ────────────────────────────── */
+    const trackerForm = document.getElementById("tracker-form");
+    if (trackerForm) {
+        trackerForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const input = document.getElementById("tracker-id");
+            const resultBox = document.getElementById("tracker-result");
+            if (!input || !resultBox) return;
+
+            const queryId = input.value.trim().toUpperCase();
+            let bookings = [];
+            try {
+                const raw = localStorage.getItem("caterly_bookings");
+                if (raw) bookings = JSON.parse(raw);
+            } catch (err) {}
+
+            const match = bookings.find(
+                (b) => b.id && b.id.toUpperCase() === queryId
+            );
+
+            if (!match) {
+                resultBox.innerHTML = `
+                    <div class="tracker-result-card" style="border-left: 4px solid var(--color-accent-dark);">
+                        <div>
+                            <strong style="color: var(--color-accent-dark);">Inquiry Not Found</strong>
+                            <p style="margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--color-text-muted);">
+                                No catering record matches <code>${queryId}</code>. Please double-check your Reference ID.
+                            </p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const statusClass = "tracker-status-" + (match.status || "Pending").toLowerCase().replace(/\s+/g, "-");
+            resultBox.innerHTML = `
+                <div class="tracker-result-card">
+                    <div>
+                        <span style="font-family: var(--font-navigation); font-size: 0.8rem; font-weight: 600; color: var(--color-accent-dark);">${match.id}</span>
+                        <h3 style="margin: 0.2rem 0; font-family: var(--font-heading); font-size: 1.3rem;">${match.eventType} for ${match.name}</h3>
+                        <p style="margin: 0; font-size: 0.85rem; color: var(--color-text-muted);">
+                            Event Date: <strong>${match.eventDate}</strong> &middot; Guests: <strong>${match.guests}</strong>
+                        </p>
+                    </div>
+                    <div>
+                        <span class="tracker-status-badge ${statusClass}">Status: ${match.status}</span>
+                    </div>
+                </div>
+            `;
+        });
+    }
 })();

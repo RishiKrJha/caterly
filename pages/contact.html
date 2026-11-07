@@ -76,6 +76,25 @@
                 <p class="form-feedback" role="status" aria-live="polite"></p>
             </form>
         </section>
+
+        <!-- ── STATUS TRACKER SECTION ───────────────────────────────── -->
+        <section class="tracker-section" aria-labelledby="tracker-heading">
+            <div class="tracker-card">
+                <div class="tracker-header">
+                    <p class="tracker-kicker">Live Status Tracking</p>
+                    <h2 id="tracker-heading">Track Your Event Inquiry</h2>
+                    <p class="tracker-desc">Already submitted a booking request? Enter your Reference ID (e.g. <code>BK-123456</code>) to check its current review and preparation status.</p>
+                </div>
+                <form class="tracker-form" id="tracker-form">
+                    <div class="tracker-input-group">
+                        <label for="tracker-id" class="sr-only">Booking Reference ID</label>
+                        <input type="text" id="tracker-id" placeholder="Enter reference number (e.g. BK-123456)" required autocomplete="off">
+                        <button type="submit" class="btn btn-secondary">Check Status</button>
+                    </div>
+                </form>
+                <div class="tracker-result" id="tracker-result" aria-live="polite"></div>
+            </div>
+        </section>
     </main>
 
     <!-- ── FOOTER ──────────────────────────────────────────────────── -->

@@ -25,16 +25,16 @@
         const pages    = inSubdir ? ""    : "pages/";
 
         /* ── 2. Check auth session ─────────────────────────────────── */
-        let isOwner = false;
+        let currentUser = null;
         try {
             const rawUser = localStorage.getItem("caterly_user");
             if (rawUser) {
-                const parsed = JSON.parse(rawUser);
-                if (parsed && parsed.role === "owner") {
-                    isOwner = true;
-                }
+                currentUser = JSON.parse(rawUser);
             }
         } catch (err) {}
+
+        const isOwner = !!(currentUser && currentUser.role === "owner");
+        const isCustomer = !!(currentUser && currentUser.role === "customer");
 
         /* ── 3. Nav link definitions ─────────────────────────────────
            key is matched against window.location.pathname for active detection. */
@@ -47,6 +47,9 @@
         if (isOwner) {
             links.push({ label: "Dashboard", href: pages + "dashboard.html", key: "dashboard" });
             links.push({ label: "Log out", href: "#logout", key: "logout", isLogout: true, cta: true });
+        } else if (isCustomer) {
+            const displayName = currentUser.name ? currentUser.name.split(" ")[0] : "Account";
+            links.push({ label: "Log out (" + displayName + ")", href: "#logout", key: "logout", isLogout: true, cta: true });
         } else {
             links.push({ label: "Login", href: pages + "login.html", key: "login", cta: true });
         }
