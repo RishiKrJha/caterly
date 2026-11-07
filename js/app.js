@@ -211,9 +211,31 @@
         });
     }
 
-    /* ── 7. Contact Page: Query Param Pre-Fill & Submission ──── */
+    /* ── 7. Contact Page: Query Param Pre-Fill & Booking Submission ──── */
     const consultForm = document.querySelector(".consultation-form");
     if (consultForm) {
+        // Set minimum date to today
+        const dateInput = document.getElementById("event-date");
+        if (dateInput) {
+            const today = new Date().toISOString().split("T")[0];
+            dateInput.min = today;
+        }
+
+        // Auto-fill logged-in user profile if available
+        if (window.CaterlyAuth) {
+            const currentUser = window.CaterlyAuth.getUser();
+            if (currentUser) {
+                const nameInput = document.getElementById("name");
+                const emailInput = document.getElementById("email");
+                if (nameInput && !nameInput.value && currentUser.name) {
+                    nameInput.value = currentUser.name;
+                }
+                if (emailInput && !emailInput.value && currentUser.email) {
+                    emailInput.value = currentUser.email;
+                }
+            }
+        }
+
         // Pre-fill fields from URL parameters (e.g. ?type=Wedding&guests=120)
         try {
             const params = new URLSearchParams(window.location.search);
@@ -245,14 +267,74 @@
             e.preventDefault();
             const feedback = consultForm.querySelector(".form-feedback");
             const submitBtn = consultForm.querySelector("button[type='submit']");
+            const nameEl = document.getElementById("name");
+            const emailEl = document.getElementById("email");
+            const phoneEl = document.getElementById("phone");
+            const typeEl = document.getElementById("event-type");
+            const dateEl = document.getElementById("event-date");
+            const guestEl = document.getElementById("guests");
+            const msgEl = document.getElementById("message");
+
+            if (feedback) feedback.textContent = "";
+
+            // Validate required inputs
+            if (!nameEl || !nameEl.value.trim()) {
+                if (feedback) {
+                    feedback.textContent = "Please enter your name.";
+                    feedback.style.color = "var(--color-accent-dark)";
+                }
+                return;
+            }
+
+            if (!emailEl || !emailEl.value.trim() || !isValidEmail(emailEl.value.trim())) {
+                if (feedback) {
+                    feedback.textContent = "Please enter a valid email address.";
+                    feedback.style.color = "var(--color-accent-dark)";
+                }
+                return;
+            }
+
+            if (!typeEl || !typeEl.value) {
+                if (feedback) {
+                    feedback.textContent = "Please select an event type.";
+                    feedback.style.color = "var(--color-accent-dark)";
+                }
+                return;
+            }
+
+            // Create new booking record
+            const newBooking = {
+                id: "BK-" + Math.floor(100000 + Math.random() * 900000),
+                name: nameEl.value.trim(),
+                email: emailEl.value.trim().toLowerCase(),
+                phone: phoneEl && phoneEl.value.trim() ? phoneEl.value.trim() : "Not provided",
+                eventType: typeEl.value,
+                eventDate: dateEl && dateEl.value ? dateEl.value : "Flexible / TBD",
+                guests: guestEl && guestEl.value ? parseInt(guestEl.value, 10) : 50,
+                message: msgEl && msgEl.value.trim() ? msgEl.value.trim() : "Standard package consultation",
+                status: "Pending",
+                createdAt: new Date().toISOString()
+            };
+
+            // Save booking to localStorage (isolated to client browser)
+            try {
+                let existing = [];
+                const raw = localStorage.getItem("caterly_bookings");
+                if (raw) existing = JSON.parse(raw);
+                if (!Array.isArray(existing)) existing = [];
+                existing.unshift(newBooking);
+                localStorage.setItem("caterly_bookings", JSON.stringify(existing));
+            } catch (err) {
+                console.error("Failed to save booking:", err);
+            }
 
             if (feedback) {
-                feedback.textContent = "Thank you! Your event details have been received. We'll be in touch within 24 hours.";
+                feedback.textContent = `Thank you, ${newBooking.name}! Your catering request (#${newBooking.id}) has been recorded. Our team will review your event details shortly.`;
                 feedback.style.color = "var(--color-secondary-dark)";
             }
             if (submitBtn) {
                 submitBtn.disabled = true;
-                submitBtn.textContent = "Consultation Requested ✓";
+                submitBtn.textContent = "Request Received ✓";
             }
         });
     }
