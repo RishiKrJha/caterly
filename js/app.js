@@ -1,138 +1,209 @@
-const loginForm = document.querySelector(".login-form");
-const passwordInput = document.querySelector("#login-password");
-const passwordToggles = document.querySelectorAll(".password-toggle");
+/**
+ * app.js — Caterly Global Interactive Behaviors
+ *
+ * Handles:
+ * 1. Universal scroll-reveal observer (.reveal, .hp-reveal, .srv-reveal)
+ * 2. Form validation for Login, Register, Forgot Password
+ * 3. Password visibility toggle
+ * 4. Contact page URL parameter pre-filling & consultation submission
+ */
 
-passwordToggles.forEach((passwordToggle) => {
-    passwordToggle.addEventListener("click", () => {
-        const controlledInput = document.querySelector(
-            `#${passwordToggle.getAttribute("aria-controls")}`
-        );
-        const isPasswordVisible = controlledInput.type === "text";
+(function () {
+    "use strict";
 
-        controlledInput.type = isPasswordVisible ? "password" : "text";
-        passwordToggle.textContent = isPasswordVisible ? "Show" : "Hide";
-        passwordToggle.setAttribute(
-            "aria-label",
-            isPasswordVisible ? "Show password" : "Hide password"
-        );
-    });
-});
-
-
-if (loginForm) {
-    loginForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-
-        const emailInput = document.querySelector("#login-email");
-        const emailError = document.querySelector("#email-error");
-        const passwordError = document.querySelector("#password-error");
-        const loginStatus = document.querySelector(".login-status");
-        let isValid = true;
-
-        emailError.textContent = "";
-        passwordError.textContent = "";
-        loginStatus.textContent = "";
-
-        if (!emailInput.value.trim()) {
-            emailError.textContent = "Enter your email address.";
-            isValid = false;
-        } else if (!emailInput.validity.valid) {
-            emailError.textContent = "Enter a valid email address.";
-            isValid = false;
-        }
-
-        if (!passwordInput.value) {
-            passwordError.textContent = "Enter your password.";
-            isValid = false;
-        }
-
-        if (isValid) {
-            loginStatus.textContent = "Your sign-in form is ready to submit.";
-        }
-    });
-}
-
-const registerForm = document.querySelector(".register-form");
-const resetForm = document.querySelector(".reset-form");
-
-function validateEmail(input, error) {
-    error.textContent = "";
-
-    if (!input.value.trim()) {
-        error.textContent = "Enter your email address.";
-        return false;
-    }
-
-    if (!input.validity.valid) {
-        error.textContent = "Enter a valid email address.";
-        return false;
-    }
-
-    return true;
-}
-
-if (registerForm) {
-    registerForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-
-        const nameInput = document.querySelector("#register-name");
-        const emailInput = document.querySelector("#register-email");
-        const passwordInput = document.querySelector("#register-password");
-        const nameError = document.querySelector("#register-name-error");
-        const emailError = document.querySelector("#register-email-error");
-        const passwordError = document.querySelector("#register-password-error");
-        const status = registerForm.querySelector(".login-status");
-        let isValid = true;
-
-        nameError.textContent = nameInput.value.trim() ? "" : "Enter your full name.";
-        isValid = Boolean(nameInput.value.trim()) && isValid;
-        isValid = validateEmail(emailInput, emailError) && isValid;
-        passwordError.textContent = "";
-
-        if (passwordInput.value.length < 8) {
-            passwordError.textContent = "Use at least 8 characters.";
-            isValid = false;
-        }
-
-        status.textContent = isValid ? "Your account details are ready to submit." : "";
-    });
-}
-
-if (resetForm) {
-    resetForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-
-        const emailInput = document.querySelector("#reset-email");
-        const emailError = document.querySelector("#reset-email-error");
-        const status = resetForm.querySelector(".login-status");
-
-        if (validateEmail(emailInput, emailError)) {
-            status.textContent = "Your reset link request is ready to submit.";
+    /* ── 1. Universal Scroll-Reveal Observer ─────────────────── */
+    const revealTargets = document.querySelectorAll(".reveal, .hp-reveal, .srv-reveal");
+    if (revealTargets.length) {
+        if ("IntersectionObserver" in window) {
+            const revealObserver = new IntersectionObserver(
+                (entries, obs) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("visible", "hp-visible", "srv-visible");
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                },
+                { threshold: 0.1, rootMargin: "0px 0px -30px 0px" }
+            );
+            revealTargets.forEach((el) => revealObserver.observe(el));
         } else {
-            status.textContent = "";
+            // Fallback for older browsers
+            revealTargets.forEach((el) => el.classList.add("visible", "hp-visible", "srv-visible"));
         }
+    }
+
+    /* ── 2. Password Visibility Toggles ──────────────────────── */
+    const passwordToggles = document.querySelectorAll(".password-toggle");
+    passwordToggles.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const targetId = btn.getAttribute("aria-controls");
+            const input = document.getElementById(targetId);
+            if (!input) return;
+
+            const isPassword = input.type === "password";
+            input.type = isPassword ? "text" : "password";
+            btn.textContent = isPassword ? "Hide" : "Show";
+            btn.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
+        });
     });
-}
 
-const aboutRevealElements = document.querySelectorAll(".about-reveal");
+    /* ── 3. Helper: Email Validation ─────────────────────────── */
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
 
-if (aboutRevealElements.length) {
-    const revealAboutContent = (entries, observer) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("about-visible");
-                observer.unobserve(entry.target);
+    /* ── 4. Login Form Validation ────────────────────────────── */
+    const loginForm = document.querySelector(".login-form");
+    if (loginForm) {
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("login-email");
+            const pass = document.getElementById("login-password");
+            const emailErr = document.getElementById("email-error");
+            const passErr = document.getElementById("password-error");
+            const status = loginForm.querySelector(".login-status");
+
+            let valid = true;
+            if (emailErr) emailErr.textContent = "";
+            if (passErr) passErr.textContent = "";
+            if (status) status.textContent = "";
+
+            if (!email || !email.value.trim()) {
+                if (emailErr) emailErr.textContent = "Please enter your email address.";
+                valid = false;
+            } else if (!isValidEmail(email.value.trim())) {
+                if (emailErr) emailErr.textContent = "Please enter a valid email address.";
+                valid = false;
+            }
+
+            if (!pass || !pass.value) {
+                if (passErr) passErr.textContent = "Please enter your password.";
+                valid = false;
+            }
+
+            if (valid && status) {
+                status.textContent = "Welcome back! Signing you in...";
+                status.style.color = "var(--color-secondary-dark)";
             }
         });
-    };
-
-    if ("IntersectionObserver" in window) {
-        const aboutObserver = new IntersectionObserver(revealAboutContent, {
-            threshold: 0.12
-        });
-
-        aboutRevealElements.forEach((element) => aboutObserver.observe(element));
-    } else {
-        aboutRevealElements.forEach((element) => element.classList.add("about-visible"));
     }
-}
+
+    /* ── 5. Register Form Validation ─────────────────────────── */
+    const registerForm = document.querySelector(".register-form");
+    if (registerForm) {
+        registerForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const name = document.getElementById("register-name");
+            const email = document.getElementById("register-email");
+            const pass = document.getElementById("register-password");
+            const nameErr = document.getElementById("register-name-error");
+            const emailErr = document.getElementById("register-email-error");
+            const passErr = document.getElementById("register-password-error");
+            const status = registerForm.querySelector(".login-status");
+
+            let valid = true;
+            if (nameErr) nameErr.textContent = "";
+            if (emailErr) emailErr.textContent = "";
+            if (passErr) passErr.textContent = "";
+            if (status) status.textContent = "";
+
+            if (!name || !name.value.trim()) {
+                if (nameErr) nameErr.textContent = "Please enter your full name.";
+                valid = false;
+            }
+
+            if (!email || !email.value.trim()) {
+                if (emailErr) emailErr.textContent = "Please enter your email address.";
+                valid = false;
+            } else if (!isValidEmail(email.value.trim())) {
+                if (emailErr) emailErr.textContent = "Please enter a valid email address.";
+                valid = false;
+            }
+
+            if (!pass || pass.value.length < 8) {
+                if (passErr) passErr.textContent = "Password must be at least 8 characters.";
+                valid = false;
+            }
+
+            if (valid && status) {
+                status.textContent = "Account details verified. Setting up your space...";
+                status.style.color = "var(--color-secondary-dark)";
+            }
+        });
+    }
+
+    /* ── 6. Reset Password Form Validation ───────────────────── */
+    const resetForm = document.querySelector(".reset-form");
+    if (resetForm) {
+        resetForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("reset-email");
+            const emailErr = document.getElementById("reset-email-error");
+            const status = resetForm.querySelector(".login-status");
+
+            if (emailErr) emailErr.textContent = "";
+            if (status) status.textContent = "";
+
+            if (!email || !email.value.trim()) {
+                if (emailErr) emailErr.textContent = "Please enter your email address.";
+                return;
+            }
+            if (!isValidEmail(email.value.trim())) {
+                if (emailErr) emailErr.textContent = "Please enter a valid email address.";
+                return;
+            }
+
+            if (status) {
+                status.textContent = "Reset link has been dispatched to your email.";
+                status.style.color = "var(--color-secondary-dark)";
+            }
+        });
+    }
+
+    /* ── 7. Contact Page: Query Param Pre-Fill & Submission ──── */
+    const consultForm = document.querySelector(".consultation-form");
+    if (consultForm) {
+        // Pre-fill fields from URL parameters (e.g. ?type=Wedding&guests=120)
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const eventType = params.get("type");
+            const guests = params.get("guests");
+
+            if (eventType) {
+                const typeSelect = document.getElementById("event-type");
+                if (typeSelect) {
+                    for (let opt of typeSelect.options) {
+                        if (opt.value.toLowerCase().includes(eventType.toLowerCase()) ||
+                            eventType.toLowerCase().includes(opt.value.toLowerCase())) {
+                            opt.selected = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (guests) {
+                const guestInput = document.getElementById("guests");
+                if (guestInput) guestInput.value = guests;
+            }
+        } catch (err) {
+            // Silently ignore URL parsing errors on file:// protocols
+        }
+
+        consultForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const feedback = consultForm.querySelector(".form-feedback");
+            const submitBtn = consultForm.querySelector("button[type='submit']");
+
+            if (feedback) {
+                feedback.textContent = "Thank you! Your event details have been received. We'll be in touch within 24 hours.";
+                feedback.style.color = "var(--color-secondary-dark)";
+            }
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Consultation Requested ✓";
+            }
+        });
+    }
+})();

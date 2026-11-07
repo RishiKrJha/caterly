@@ -1,36 +1,18 @@
-/* home.js — homepage-only interactions */
+/**
+ * home.js — Homepage-specific micro-interactions
+ * Hero slow zoom trigger & marquee animation controls.
+ */
 
 (function () {
     "use strict";
 
-    /* ── Hero image: trigger slow-zoom after load ── */
+    // 1. Hero image zoom on initial load
     const hero = document.querySelector(".hp-hero");
     if (hero) {
-        // Small delay so animation starts visibly
         setTimeout(() => hero.classList.add("hp-loaded"), 80);
     }
 
-    /* ── Scroll-reveal: .hp-reveal → .hp-visible ── */
-    const revealEls = document.querySelectorAll(".hp-reveal");
-    if (revealEls.length && "IntersectionObserver" in window) {
-        const observer = new IntersectionObserver(
-            (entries, obs) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("hp-visible");
-                        obs.unobserve(entry.target);
-                    }
-                });
-            },
-            { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
-        );
-        revealEls.forEach((el) => observer.observe(el));
-    } else {
-        // Fallback: show all immediately
-        revealEls.forEach((el) => el.classList.add("hp-visible"));
-    }
-
-    /* ── Pause marquee on hover / prefer-reduced-motion ── */
+    // 2. Pause marquee on user hover & respect reduced-motion
     const marqueeTrack = document.querySelector(".hp-marquee-track");
     if (marqueeTrack) {
         const marquee = marqueeTrack.parentElement;
