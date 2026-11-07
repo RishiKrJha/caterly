@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create account | Caterly</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/app.js" defer></script>
+</head>
+<body class="auth-page-body">
+    <header>
+        <a class="site-brand" href="../index.html">
+            <h1 class="site-title">Caterly</h1>
+        </a>
+        <nav aria-label="Primary navigation">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="auth-shell auth-register" aria-labelledby="register-heading">
+            <div class="auth-visual">
+                <p class="auth-visual-kicker">A place to begin</p>
+                <div>
+                    <p class="auth-visual-mark">Caterly</p>
+                    <h2>Start with something worth celebrating.</h2>
+                    <p>Build a planning space for every gathering ahead.</p>
+                </div>
+                <p class="auth-visual-note">Plan with intention.</p>
+            </div>
+
+            <div class="auth-content">
+                <div class="auth-content-inner">
+                    <p class="login-kicker">Start planning</p>
+                    <h1 id="register-heading">Create your account</h1>
+                    <p class="form-note">Save your event details and make planning your next gathering easier.</p>
+
+                    <form class="auth-form register-form" novalidate>
+                    <div class="form-field">
+                        <label for="register-name">Full name</label>
+                        <input type="text" id="register-name" name="name" autocomplete="name" placeholder="Your full name" required>
+                        <span class="field-error" id="register-name-error"></span>
+                    </div>
+                    <div class="form-field">
+                        <label for="register-email">Email address</label>
+                        <input type="email" id="register-email" name="email" autocomplete="email" placeholder="you@example.com" required>
+                        <span class="field-error" id="register-email-error"></span>
+                    </div>
+                    <div class="form-field">
+                        <label for="register-password">Password</label>
+                        <div class="password-input">
+                            <input type="password" id="register-password" name="password" autocomplete="new-password" placeholder="At least 8 characters" required>
+                            <button class="password-toggle" type="button" aria-controls="register-password" aria-label="Show password">Show</button>
+                        </div>
+                        <span class="field-error" id="register-password-error"></span>
+                    </div>
+                    <button class="login-submit" type="submit">Create account</button>
+                    <p class="login-status" role="status" aria-live="polite"></p>
+                </form>
+
+                    <p class="signup-prompt">Already have an account? <a href="login.html">Sign in</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

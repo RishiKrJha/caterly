@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Caterly</title>
     <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/app.js" defer></script>
 </head>
-<body>
+<body class="auth-page-body">
     <header>
         <a class="site-brand" href="../index.html">
             <h1 class="site-title">Caterly</h1>
@@ -22,7 +23,55 @@
         </nav>
     </header>
     <main>
-        <p>This is Login page</p>
+        <section class="auth-shell auth-login" aria-labelledby="login-heading">
+            <div class="auth-visual">
+                <p class="auth-visual-kicker">Catering, considered</p>
+                <div>
+                    <p class="auth-visual-mark">Caterly</p>
+                    <h2>Make room for good moments.</h2>
+                    <p>Your plans, menus, and events—beautifully organised.</p>
+                </div>
+                <p class="auth-visual-note">Good food. Great moments.</p>
+            </div>
+
+            <div class="auth-content">
+                <div class="auth-content-inner">
+                    <p class="login-kicker">Welcome back</p>
+                    <h1 id="login-heading">Sign in to your account</h1>
+                    <p class="form-note">Manage your catering plans from one place.</p>
+
+                    <form class="login-form auth-form" novalidate>
+                    <div class="form-field">
+                        <label for="login-email">Email address</label>
+                        <input type="email" id="login-email" name="email" autocomplete="email" placeholder="you@example.com" required>
+                        <span class="field-error" id="email-error"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="login-password">Password</label>
+                        <div class="password-input">
+                            <input type="password" id="login-password" name="password" autocomplete="current-password" placeholder="Enter your password" required>
+                            <button class="password-toggle" type="button" aria-controls="login-password" aria-label="Show password">Show</button>
+                        </div>
+                        <span class="field-error" id="password-error"></span>
+                    </div>
+
+                    <div class="login-options">
+                        <label class="remember-option">
+                            <input type="checkbox" name="remember">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="forgot-password.html">Forgot password?</a>
+                    </div>
+
+                    <button class="login-submit" type="submit">Sign in</button>
+                    <p class="login-status" role="status" aria-live="polite"></p>
+                </form>
+
+                    <p class="signup-prompt">New here? <a href="register.html">Create an account</a></p>
+                </div>
+            </div>
+        </section>
     </main>
 </body>
 </html>
