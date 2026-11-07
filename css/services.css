@@ -1,0 +1,550 @@
+/* ============================================================
+   services.css — Caterly Services Page Styles
+   Loaded only on pages/services.html
+   ============================================================ */
+
+:root {
+    --srv-cream:   #fff8f0;
+    --srv-tan:     #f3e8dc;
+    --srv-brown:   #241a14;
+    --srv-muted:   #705f52;
+    --srv-green:   #3f6b5b;
+    --srv-green-d: #2e5144;
+    --srv-orange:  #ff6600;
+    --srv-orange-d:#c94f08;
+    --srv-radius:  16px;
+    --srv-gutter:  clamp(1.25rem, 6vw, 6.5rem);
+    --srv-pad:     clamp(4rem, 8vw, 7.5rem);
+}
+
+/* ── Base Page Styling ────────────────────────────────────── */
+.services-page-body {
+    background-color: var(--srv-cream);
+    background-image: none;
+    color: var(--srv-brown);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+}
+
+/* ── HERO BANNER ──────────────────────────────────────────── */
+.srv-hero {
+    padding: clamp(3.5rem, 7vw, 6.5rem) var(--srv-gutter) clamp(2.5rem, 5vw, 4.5rem);
+    max-width: 1280px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.srv-kicker {
+    margin: 0 0 0.8rem;
+    font-family: var(--font-navigation);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--srv-orange);
+}
+
+.srv-hero-title {
+    margin: 0 auto 1.2rem;
+    font-family: var(--font-heading);
+    font-size: clamp(2.8rem, 6vw, 5.2rem);
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--srv-brown);
+    max-width: 880px;
+}
+
+.srv-hero-title em {
+    font-style: italic;
+    color: var(--srv-orange);
+}
+
+.srv-hero-lead {
+    margin: 0 auto 2.5rem;
+    font-family: var(--font-subheading);
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    line-height: 1.7;
+    color: var(--srv-muted);
+    max-width: 680px;
+}
+
+/* Filter pills */
+.srv-filter-bar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1rem;
+}
+
+.srv-pill {
+    padding: 0.55rem 1.25rem;
+    border-radius: 100px;
+    border: 1px solid rgba(112, 95, 82, 0.25);
+    background: transparent;
+    color: var(--srv-muted);
+    font-family: var(--font-navigation);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.srv-pill:hover,
+.srv-pill.active {
+    background: var(--srv-green);
+    color: #fff;
+    border-color: var(--srv-green);
+    transform: translateY(-1px);
+}
+
+/* ── SERVICE CARDS (EDITORIAL ALTERNATING LAYOUT) ─────────── */
+.srv-list {
+    padding: 1rem var(--srv-gutter) var(--srv-pad);
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    gap: clamp(3.5rem, 7vw, 6.5rem);
+}
+
+.srv-card {
+    display: grid;
+    grid-template-columns: 1fr 1.08fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+    position: relative;
+}
+
+.srv-card.srv-card-reverse {
+    grid-template-columns: 1.08fr 1fr;
+}
+
+.srv-card.srv-card-reverse .srv-visual {
+    order: 2;
+}
+
+.srv-card.srv-card-reverse .srv-info {
+    order: 1;
+}
+
+/* Visual frame */
+.srv-visual {
+    position: relative;
+    border-radius: var(--srv-radius);
+    overflow: hidden;
+    box-shadow: 0 12px 36px rgba(83, 48, 20, 0.08);
+}
+
+.srv-visual img {
+    display: block;
+    width: 100%;
+    height: clamp(320px, 36vw, 460px);
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.srv-card:hover .srv-visual img {
+    transform: scale(1.04);
+}
+
+.srv-badge {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    padding: 0.4rem 0.9rem;
+    background: rgba(255, 248, 240, 0.92);
+    backdrop-filter: blur(8px);
+    border-radius: 100px;
+    font-family: var(--font-navigation);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--srv-brown);
+    font-weight: 500;
+}
+
+/* Info content */
+.srv-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.srv-index {
+    display: inline-block;
+    font-family: var(--font-navigation);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--srv-orange);
+    margin-bottom: 0.5rem;
+}
+
+.srv-info h3 {
+    margin: 0 0 1rem;
+    font-family: var(--font-heading);
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--srv-brown);
+}
+
+.srv-info p {
+    margin: 0 0 1.5rem;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: var(--srv-muted);
+    max-width: 500px;
+}
+
+/* Inclusions pill tags */
+.srv-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 1.8rem;
+    padding: 0;
+    list-style: none;
+}
+
+.srv-features li {
+    padding: 0.32rem 0.85rem;
+    background: var(--srv-tan);
+    border-radius: 100px;
+    font-family: var(--font-navigation);
+    font-size: 0.66rem;
+    color: var(--srv-brown);
+    letter-spacing: 0.02em;
+}
+
+/* Action button */
+.srv-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.6rem;
+    border-radius: 100px;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--srv-green);
+    color: #fff;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 16px rgba(63, 107, 91, 0.25);
+}
+
+.srv-btn:hover {
+    background: var(--srv-green-d);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(63, 107, 91, 0.35);
+}
+
+.srv-btn span {
+    transition: transform 0.25s ease;
+}
+
+.srv-btn:hover span {
+    transform: translateX(4px);
+}
+
+/* ── INCLUSIONS / STANDARDS STRIP ─────────────────────────── */
+.srv-standards {
+    background: var(--srv-tan);
+    padding: var(--srv-pad) var(--srv-gutter);
+}
+
+.srv-standards-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 3.5rem;
+}
+
+.srv-standards-header h2 {
+    margin: 0.5rem 0 1rem;
+    font-family: var(--font-heading);
+    font-size: clamp(2.4rem, 4.5vw, 4rem);
+    font-weight: 400;
+    line-height: 1;
+    color: var(--srv-brown);
+}
+
+.srv-standards-header p {
+    margin: 0;
+    color: var(--srv-muted);
+    font-size: 1rem;
+    line-height: 1.65;
+}
+
+.srv-standards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.srv-standard-item {
+    background: var(--srv-cream);
+    padding: 2.2rem 1.8rem;
+    border-radius: var(--srv-radius);
+    border: 1px solid rgba(240, 220, 200, 0.6);
+    box-shadow: 0 4px 18px rgba(83, 48, 20, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.srv-standard-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(83, 48, 20, 0.1);
+}
+
+.srv-std-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.srv-standard-item h3 {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-subheading);
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--srv-brown);
+}
+
+.srv-standard-item p {
+    margin: 0;
+    color: var(--srv-muted);
+    font-size: 0.9rem;
+    line-height: 1.65;
+}
+
+/* ── PULL QUOTE ───────────────────────────────────────────── */
+.srv-quote {
+    padding: clamp(3.5rem, 6vw, 5.5rem) var(--srv-gutter);
+    text-align: center;
+    background: var(--srv-cream);
+}
+
+.srv-quote blockquote {
+    margin: 0 auto;
+    max-width: 760px;
+}
+
+.srv-quote p {
+    margin: 0 0 1rem;
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 3.8vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--srv-green-d);
+    letter-spacing: -0.01em;
+}
+
+.srv-quote cite {
+    display: block;
+    font-family: var(--font-navigation);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--srv-muted);
+    font-style: normal;
+}
+
+/* ── CTA BANNER ───────────────────────────────────────────── */
+.srv-cta {
+    position: relative;
+    padding: clamp(4.5rem, 8vw, 7rem) var(--srv-gutter);
+    background: var(--srv-green-d);
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+}
+
+.srv-cta-content {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.srv-cta h2 {
+    margin: 0.6rem 0 1.2rem;
+    font-family: var(--font-heading);
+    font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.srv-cta p {
+    margin: 0 auto 2.2rem;
+    font-family: var(--font-subheading);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.82);
+    max-width: 540px;
+}
+
+.srv-cta-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.srv-btn-light {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.9rem;
+    border-radius: 100px;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: var(--srv-cream);
+    color: var(--srv-green-d);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+    transition: all 0.25s ease;
+}
+
+.srv-btn-light:hover {
+    background: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.25);
+}
+
+.srv-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.9rem;
+    border-radius: 100px;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    background: transparent;
+    color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.45);
+    transition: all 0.25s ease;
+}
+
+.srv-btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+.srv-footer {
+    padding: 2.4rem var(--srv-gutter);
+    background: var(--srv-brown);
+}
+
+.srv-footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.srv-footer-logo {
+    font-size: 28px !important;
+    color: var(--srv-orange) !important;
+}
+
+.srv-footer nav ul {
+    display: flex;
+    gap: 1.8rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.srv-footer nav a {
+    color: rgba(255, 248, 240, 0.65);
+    text-decoration: none;
+    font-family: var(--font-navigation);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.25s ease;
+}
+
+.srv-footer nav a:hover {
+    color: var(--srv-orange);
+}
+
+.srv-footer-copy {
+    margin: 0;
+    font-family: var(--font-navigation);
+    font-size: 0.65rem;
+    color: rgba(255, 248, 240, 0.35);
+    letter-spacing: 0.04em;
+}
+
+/* ── SCROLL REVEAL ANIMATIONS ─────────────────────────────── */
+.srv-reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.75s cubic-bezier(0.2, 1, 0.3, 1),
+                transform 0.75s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.srv-reveal.srv-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* ── RESPONSIVE RULES ─────────────────────────────────────── */
+@media (max-width: 960px) {
+    .srv-standards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .srv-card,
+    .srv-card.srv-card-reverse {
+        grid-template-columns: 1fr;
+        gap: 1.8rem;
+    }
+
+    .srv-card.srv-card-reverse .srv-visual {
+        order: 0;
+    }
+
+    .srv-card.srv-card-reverse .srv-info {
+        order: 1;
+    }
+
+    .srv-visual img {
+        height: 300px;
+    }
+}
+
+@media (max-width: 600px) {
+    .srv-standards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .srv-filter-bar {
+        gap: 0.4rem;
+    }
+
+    .srv-pill {
+        padding: 0.45rem 0.9rem;
+        font-size: 0.65rem;
+    }
+
+    .srv-footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
