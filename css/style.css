@@ -5,6 +5,7 @@
     --font-logo: "Square Peg", cursive;
     --font-navigation: "JetBrains Mono", monospace;
     --color-accent: #ff6600;
+    --color-page-background: #fff8f0;
     --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     --transition-color: color 0.3s ease;
 }
@@ -16,13 +17,15 @@
 body {
     margin: 0;
     padding: 0;
+    background-color: var(--color-page-background);
 }
 
 header {
-    padding: 1vh 7vw;
-    background-color: #fff;
+    padding: 1vh clamp(1.5rem, 7vw, 7rem);
+    background-color: var(--color-page-background);
     display: flex;
     min-height: 64px;
+    gap: 2rem;
     justify-content: space-between;
     align-items: center;
     box-shadow: var(--header-shadow);
@@ -48,6 +51,8 @@ nav ul {
     gap: 2vw;
     margin: 0;
     padding: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     list-style-type: none;
 }
 
