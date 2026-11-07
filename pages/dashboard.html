@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Dashboard | Caterly</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <script src="../js/auth.js"></script>
+    <script>
+        // Redirect to login if not authenticated as owner
+        if (window.CaterlyAuth && !window.CaterlyAuth.requireOwner("login.html")) {
+            // Execution stopped by requireOwner redirect
+        }
+    </script>
+    <script src="../js/navbar.js"></script>
+    <script src="../js/dashboard.js" defer></script>
+</head>
+<body class="dashboard-body">
+    <main class="dashboard-page">
+
+        <!-- ── HEADER SECTION ──────────────────────────────────────── -->
+        <header class="dash-header">
+            <div>
+                <p class="dash-eyebrow">Owner Portal &middot; Operations</p>
+                <h1 class="dash-title">Catering Business Management</h1>
+                <p class="dash-subtitle">Track client inquiries, manage event bookings, update preparation statuses, and monitor operational reports.</p>
+            </div>
+            <div class="dash-header-actions">
+                <button type="button" class="btn btn-primary" id="btn-new-booking">+ New Booking</button>
+            </div>
+        </header>
+
+        <!-- ── METRICS SUMMARY / REPORTING ──────────────────────────── -->
+        <section class="dash-metrics-grid" aria-label="Key Performance Indicators">
+            <article class="metric-card">
+                <div class="metric-header">
+                    <h2 class="metric-label">Total Inquiries</h2>
+                    <span class="metric-badge metric-badge-total">All Time</span>
+                </div>
+                <p class="metric-value" id="metric-total">0</p>
+                <p class="metric-desc">Registered event requests in system</p>
+            </article>
+
+            <article class="metric-card">
+                <div class="metric-header">
+                    <h2 class="metric-label">Pending Review</h2>
+                    <span class="metric-badge metric-badge-pending">Action Required</span>
+                </div>
+                <p class="metric-value" id="metric-pending">0</p>
+                <p class="metric-desc">Awaiting staff confirmation</p>
+            </article>
+
+            <article class="metric-card">
+                <div class="metric-header">
+                    <h2 class="metric-label">Confirmed Events</h2>
+                    <span class="metric-badge metric-badge-confirmed">Scheduled</span>
+                </div>
+                <p class="metric-value" id="metric-confirmed">0</p>
+                <p class="metric-desc">Approved and ready for preparation</p>
+            </article>
+
+            <article class="metric-card">
+                <div class="metric-header">
+                    <h2 class="metric-label">Expected Guests</h2>
+                    <span class="metric-badge metric-badge-guests">Capacity</span>
+                </div>
+                <p class="metric-value" id="metric-guests">0</p>
+                <p class="metric-desc">Cumulative guests across all events</p>
+            </article>
+        </section>
+
+        <!-- ── TOOLBAR / SEARCH & FILTERS ──────────────────────────── -->
+        <section class="dash-toolbar" aria-label="Search and filter records">
+            <div class="toolbar-filters">
+                <div class="dash-search-box">
+                    <span class="dash-search-icon" aria-hidden="true">&#128269;</span>
+                    <input type="search" id="dash-search" class="dash-search-input" placeholder="Search by client, email, event..." aria-label="Search bookings">
+                </div>
+
+                <select id="filter-status" class="dash-select" aria-label="Filter by status">
+                    <option value="all">All Statuses</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+
+                <select id="filter-event" class="dash-select" aria-label="Filter by event type">
+                    <option value="all">All Event Types</option>
+                    <option value="Wedding">Wedding</option>
+                    <option value="Birthday">Birthday</option>
+                    <option value="Corporate event">Corporate event</option>
+                    <option value="Private party">Private party</option>
+                    <option value="Festival or celebration">Festival or celebration</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <span class="toolbar-meta" id="filter-count">Showing 0 inquiries</span>
+        </section>
+
+        <!-- ── RECORDS TABLE / CRUD MANAGEMENT ─────────────────────── -->
+        <section class="dash-records-card" aria-label="Booking Records">
+            
+            <!-- Empty State Display -->
+            <div class="dash-empty-state" id="dash-empty-state">
+                <div class="empty-icon" aria-hidden="true">&#128203;</div>
+                <h2 class="empty-heading">No Catering Bookings Found</h2>
+                <p class="empty-desc">New requests submitted via the website consultation form will appear here automatically. You can also create one manually.</p>
+                <button type="button" class="btn btn-secondary" id="btn-empty-create">+ Create First Booking</button>
+            </div>
+
+            <!-- Data Table Display -->
+            <div class="table-responsive" id="dash-table-wrapper" style="display: none;">
+                <table class="dash-table" aria-label="Bookings List">
+                    <thead>
+                        <tr>
+                            <th scope="col">Reference</th>
+                            <th scope="col">Client Details</th>
+                            <th scope="col">Event Details</th>
+                            <th scope="col">Notes</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dash-table-body">
+                        <!-- Rendered dynamically by dashboard.js -->
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ── CREATE / EDIT BOOKING MODAL ─────────────────────────────── -->
+    <div class="dash-modal-backdrop" id="booking-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="dash-modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Create New Catering Booking</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close dialog">&times;</button>
+            </div>
+
+            <form id="booking-form" novalidate>
+                <div class="modal-grid">
+                    <div class="form-field modal-grid-full">
+                        <label for="modal-name">Client Name *</label>
+                        <input type="text" id="modal-name" required placeholder="Full name of client">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="modal-email">Email Address *</label>
+                        <input type="email" id="modal-email" required placeholder="client@example.com">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="modal-phone">Phone Number</label>
+                        <input type="tel" id="modal-phone" placeholder="+1 (555) 000-0000">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="modal-event-type">Event Type *</label>
+                        <select id="modal-event-type" required>
+                            <option value="Wedding">Wedding</option>
+                            <option value="Birthday">Birthday</option>
+                            <option value="Corporate event">Corporate event</option>
+                            <option value="Private party">Private party</option>
+                            <option value="Festival or celebration">Festival or celebration</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="modal-event-date">Event Date</label>
+                        <input type="date" id="modal-event-date">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="modal-guests">Guest Count</label>
+                        <input type="number" id="modal-guests" min="1" value="50">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="modal-status">Booking Status</label>
+                        <select id="modal-status">
+                            <option value="Pending">Pending</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field modal-grid-full">
+                        <label for="modal-notes">Dietary Notes &amp; Requirements</label>
+                        <textarea id="modal-notes" rows="3" placeholder="Special menu requests, dietary restrictions, venue notes..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" data-close-modal>Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btn-modal-save">Save Booking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── TOAST NOTIFICATION ──────────────────────────────────────── -->
+    <div class="dash-toast" id="dash-toast" role="status" aria-live="polite"></div>
+
+    <!-- ── SHARED FOOTER ──────────────────────────────────────────── -->
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <a class="site-brand" href="../index.html">
+                <span class="site-title site-footer-logo">Caterly</span>
+            </a>
+            <nav aria-label="Footer navigation">
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                </ul>
+            </nav>
+            <p class="site-footer-copy">&copy; 2026 Caterly &middot; Phagwara, Punjab</p>
+        </div>
+    </footer>
+
+</body>
+</html>
