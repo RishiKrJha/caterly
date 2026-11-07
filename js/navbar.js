@@ -24,16 +24,34 @@
         const root     = inSubdir ? "../" : "";
         const pages    = inSubdir ? ""    : "pages/";
 
-        /* ── 2. Nav link definitions ─────────────────────────────────
+        /* ── 2. Check auth session ─────────────────────────────────── */
+        let isOwner = false;
+        try {
+            const rawUser = localStorage.getItem("caterly_user");
+            if (rawUser) {
+                const parsed = JSON.parse(rawUser);
+                if (parsed && parsed.role === "owner") {
+                    isOwner = true;
+                }
+            }
+        } catch (err) {}
+
+        /* ── 3. Nav link definitions ─────────────────────────────────
            key is matched against window.location.pathname for active detection. */
         const links = [
             { label: "Home",     href: root  + "index.html",     key: "index"    },
             { label: "Services", href: pages + "services.html",  key: "services" },
             { label: "Contact",  href: pages + "contact.html",   key: "contact"  },
-            { label: "Login",    href: pages + "login.html",     key: "login",   cta: true },
         ];
 
-        /* ── 3. Detect active page ───────────────────────────────────
+        if (isOwner) {
+            links.push({ label: "Dashboard", href: pages + "dashboard.html", key: "dashboard" });
+            links.push({ label: "Log out", href: "#logout", key: "logout", isLogout: true, cta: true });
+        } else {
+            links.push({ label: "Login", href: pages + "login.html", key: "login", cta: true });
+        }
+
+        /* ── 4. Detect active page ───────────────────────────────────
            Default to "index" when pathname is "/" or ends with root. */
         const path = window.location.pathname.toLowerCase();
         let activePage = links.find(function (l) {
@@ -45,16 +63,17 @@
             activePage = links[0];
         }
 
-        /* ── 4. Build <li> items ─────────────────────────────────────*/
+        /* ── 5. Build <li> items ─────────────────────────────────────*/
         const liHTML = links.map(function (link) {
             const classes = [];
             if (activePage.key === link.key) classes.push("nav-active");
             if (link.cta) classes.push("nav-cta");
             const classAttr = classes.length ? ' class="' + classes.join(" ") + '"' : "";
-            return '<li><a href="' + link.href + '"' + classAttr + '>' + link.label + '</a></li>';
+            const extraAttr = link.isLogout ? ' data-nav-logout="true"' : "";
+            return '<li><a href="' + link.href + '"' + classAttr + extraAttr + '>' + link.label + '</a></li>';
         }).join("\n            ");
 
-        /* ── 5. Build the full <header> ──────────────────────────────*/
+        /* ── 6. Build the full <header> ──────────────────────────────*/
         const headerHTML =
             '<header id="site-header">\n' +
             '    <a class="site-brand" href="' + root + 'index.html">\n' +
@@ -67,7 +86,7 @@
             '    </nav>\n' +
             '</header>';
 
-        /* ── 6. Inject into the DOM ──────────────────────────────────
+        /* ── 7. Inject into the DOM ──────────────────────────────────
            If a <div id="navbar-mount"> placeholder exists, replace it.
            Otherwise prepend directly to <body>. */
         const mount = document.getElementById("navbar-mount");
@@ -77,7 +96,19 @@
             document.body.insertAdjacentHTML("afterbegin", headerHTML);
         }
 
-        /* ── 7. Scroll-glass behaviour ───────────────────────────────
+        // Attach logout click listener
+        const logoutBtn = document.querySelector('a[data-nav-logout="true"]');
+        if (logoutBtn) {
+            logoutBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                try {
+                    localStorage.removeItem("caterly_user");
+                } catch (err) {}
+                window.location.href = pages + "login.html";
+            });
+        }
+
+        /* ── 8. Scroll-glass behaviour ───────────────────────────────
            Toggles .nav-scrolled on <header id="site-header"> at 40 px. */
         const header = document.getElementById("site-header");
         if (header) {

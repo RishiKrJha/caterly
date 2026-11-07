@@ -83,8 +83,33 @@
             }
 
             if (valid && status) {
-                status.textContent = "Welcome back! Signing you in...";
+                const cleanEmail = email.value.trim().toLowerCase();
+                const isOwner = cleanEmail.endsWith("@caterly.com") || cleanEmail === "admin@caterly.com";
+                const user = {
+                    email: cleanEmail,
+                    role: isOwner ? "owner" : "customer",
+                    name: isOwner ? "Management" : cleanEmail.split("@")[0],
+                    loggedInAt: new Date().toISOString()
+                };
+
+                if (window.CaterlyAuth) {
+                    window.CaterlyAuth.setUser(user);
+                } else {
+                    localStorage.setItem("caterly_user", JSON.stringify(user));
+                }
+
+                status.textContent = isOwner 
+                    ? "Welcome, Management. Opening Dashboard..." 
+                    : "Welcome back! Signing you in...";
                 status.style.color = "var(--color-secondary-dark)";
+
+                setTimeout(() => {
+                    if (isOwner) {
+                        window.location.href = "dashboard.html";
+                    } else {
+                        window.location.href = "../index.html";
+                    }
+                }, 600);
             }
         });
     }
@@ -127,8 +152,33 @@
             }
 
             if (valid && status) {
-                status.textContent = "Account details verified. Setting up your space...";
+                const cleanEmail = email.value.trim().toLowerCase();
+                const isOwner = cleanEmail.endsWith("@caterly.com");
+                const user = {
+                    email: cleanEmail,
+                    role: isOwner ? "owner" : "customer",
+                    name: name.value.trim(),
+                    loggedInAt: new Date().toISOString()
+                };
+
+                if (window.CaterlyAuth) {
+                    window.CaterlyAuth.setUser(user);
+                } else {
+                    localStorage.setItem("caterly_user", JSON.stringify(user));
+                }
+
+                status.textContent = isOwner
+                    ? "Owner account created. Opening Dashboard..."
+                    : "Account created! Welcome to Caterly.";
                 status.style.color = "var(--color-secondary-dark)";
+
+                setTimeout(() => {
+                    if (isOwner) {
+                        window.location.href = "dashboard.html";
+                    } else {
+                        window.location.href = "../index.html";
+                    }
+                }, 600);
             }
         });
     }
